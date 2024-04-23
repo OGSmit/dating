@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema(
     {
@@ -21,5 +22,6 @@ const userSchema = new mongoose.Schema(
     },
     { versionKey: false },
 );
+
 
 export default mongoose.models.Users || mongoose.model('Users', userSchema);

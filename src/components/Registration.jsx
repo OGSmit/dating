@@ -21,15 +21,10 @@ const RegisterForm = () => {
   });
   
   async function handleJWTCheck () {
-    const token = localStorage.getItem('jwt');
-
-    console.log(token)
-
     await fetch('http://localhost:3000/api/login', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
     })
     .then(res => console.log(res))
@@ -51,10 +46,6 @@ const RegisterForm = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData)
-    }).then(async res => {
-      const data = await res.json()
-      console.log(data)
-      localStorage.setItem('jwt', data.token)
     })
   }
 

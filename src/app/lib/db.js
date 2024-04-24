@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 export async function dbConnect() {
   try {
     if (global.mongoose && global.mongoose.conn) {
-      console.log("Connected from previous");
       return global.mongoose.conn;
     } else {
       const conString = 'mongodb+srv://jackkerouac1613:R8QL3SXaGJpmBO9y@tinder.smyb7tb.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Tinder';
@@ -22,11 +21,9 @@ export async function dbConnect() {
         promise,
       };
 
-      console.log("Newly connected");
       return await promise;
     }
   } catch (error) {
-    console.error("Error connecting to the database:", error);
     throw new Error("Database connection failed");
   }
 }

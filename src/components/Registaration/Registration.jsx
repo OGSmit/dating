@@ -30,9 +30,9 @@ const RegisterForm = () => {
     .then(res => console.log(res))
   }
   
-  useEffect(() => {
+  /*useEffect(() => {
     handleJWTCheck()
-  }, []);
+  }, []);*/
 
   const handleChange = (e) => {
     const { name, value } = e.target;

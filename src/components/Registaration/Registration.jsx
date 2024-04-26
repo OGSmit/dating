@@ -13,12 +13,48 @@ async function appendUser(data) {
 	})
 }
 
+const step = {
+  1: '',
+  2: '',
+  3: '',
+  4: '',
+  5: '',
+  6: '',
+  7: '',
+  8: '',
+}
+
 const RegisterForm = () => {
+  const [activeStep, setActiveStep] = useState(0)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    gender: ''
   });
+
+  const changeStep = (direction) => {
+    if(direction === 'forward') {
+      setActiveStep((prevState) => {
+        prevState + 1
+      })
+    } else {
+      setActiveStep((prevState) => {
+        prevState - 1
+      })
+    }
+  }
+
+  const changeKey = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+  }
+
+  useEffect(() => {
+    console.log(formData)
+    changeKey('gender', 'male')
+
+    console.log(formData)
+  }, [])
   
   async function handleJWTCheck () {
     await fetch('http://localhost:3000/api/login', {
@@ -93,7 +129,7 @@ const RegisterForm = () => {
         />
       </div>
       <button type="submit">Зарегистрироваться</button>
-      <button type='button' onClick={login}>Войти</button>
+      <button type='button' onClick={() => console.log(formData)}>Войти</button>
     </form>
   );
 };

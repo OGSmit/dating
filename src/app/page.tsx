@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import MainPage from "@/components/MainPage/MainPage";
+import RegisteForm from '@/components/Registaration/Registration'
 
 async function getData () {
 	const res = await fetch('http://localhost:3000/api/checkdb', {
@@ -16,7 +16,7 @@ async function getData () {
 export default function Home() {
 	return (
 	<main className={styles.main}>
-		<MainPage />
+		<RegisteForm />
 	</main>
 	);
 }

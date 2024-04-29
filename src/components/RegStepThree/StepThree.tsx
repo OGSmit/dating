@@ -27,7 +27,17 @@ const StepThree: React.FC<StepThreeProps> = ({ changeStep, changeFormData, formD
         setYear(value ? parseInt(value) : '');
     };
 
-    const handleNext = () => {
+    async function handleNext() {
+
+        if (month !== '' && day !== '') {
+            getHoroscope(month, day);
+        }
+        // Получение знака зодиака
+        getAge();
+    };
+
+   
+    function  getAge() {
         if (!day || !month || !year) {
             alert('Пожалуйста, заполните все поля даты рождения.');
             return;
@@ -39,50 +49,38 @@ const StepThree: React.FC<StepThreeProps> = ({ changeStep, changeFormData, formD
 
         const birthday = `${day}-${month}-${year}`;
 
-        const horoscope = getHoroscope(month, day); // Получение знака зодиака
+        return changeFormData('birthday', birthday);
+    }
 
-        if (age < 18) {
-            alert('Вы должны быть старше 18 лет для регистрации');
-            return;
+    function getHoroscope(month: number, day: number) {
+        // Проверяем входные данные на корректность
+        if (month < 1 || month > 12 || day < 1 || day > 31) {
+            return changeFormData('horoscope', "Некорректная дата") ;
         }
 
-        changeFormData('horoscope', horoscope);
-        changeFormData('birthday', birthday);
-    };
-
-    function getHoroscope(month: number, day: number): string {
-
-        const horoscopes = [
-            { sign: 'Овен', start: '03-21', end: '04-19' },
-            { sign: 'Телец', start: '04-20', end: '05-20' },
-            { sign: 'Близнецы', start: '05-21', end: '06-20' },
-            { sign: 'Рак', start: '06-21', end: '07-22' },
-            { sign: 'Лев', start: '07-23', end: '08-22' },
-            { sign: 'Дева', start: '08-23', end: '09-22' },
-            { sign: 'Весы', start: '09-23', end: '10-22' },
-            { sign: 'Скорпион', start: '10-23', end: '11-21' },
-            { sign: 'Стрелец', start: '11-22', end: '12-21' },
-            { sign: 'Козерог', start: '12-22', end: '01-19' },
-            { sign: 'Водолей', start: '01-20', end: '02-18' },
-            { sign: 'Рыбы', start: '02-19', end: '03-20' },
+        // Массив данных о знаках зодиака и их соответствующие даты
+        const zodiacSigns = [
+            { sign: "Козерог", startMonth: 1, startDay: 1, endMonth: 1, endDay: 19 },
+            { sign: "Водолей", startMonth: 1, startDay: 20, endMonth: 2, endDay: 18 },
+            { sign: "Рыбы", startMonth: 2, startDay: 19, endMonth: 3, endDay: 20 },
+            { sign: "Овен", startMonth: 3, startDay: 21, endMonth: 4, endDay: 19 },
+            { sign: "Телец", startMonth: 4, startDay: 20, endMonth: 5, endDay: 20 },
+            { sign: "Близнецы", startMonth: 5, startDay: 21, endMonth: 6, endDay: 20 },
+            { sign: "Рак", startMonth: 6, startDay: 21, endMonth: 7, endDay: 22 },
+            { sign: "Лев", startMonth: 7, startDay: 23, endMonth: 8, endDay: 22 },
+            { sign: "Дева", startMonth: 8, startDay: 23, endMonth: 9, endDay: 22 },
+            { sign: "Весы", startMonth: 9, startDay: 23, endMonth: 10, endDay: 22 },
+            { sign: "Скорпион", startMonth: 10, startDay: 23, endMonth: 11, endDay: 21 },
+            { sign: "Стрелец", startMonth: 11, startDay: 22, endMonth: 12, endDay: 21 },
+            { sign: "Козерог", startMonth: 12, startDay: 22, endMonth: 12, endDay: 31 }
         ];
 
-        const matchingHoroscope = horoscopes.find(({ start, end }) => {
-            const [startMonth, startDay] = start.split('-').map(Number);
-            const [endMonth, endDay] = end.split('-').map(Number);
-            console.log('popali', month, startMonth)
-            if ((month === startMonth && day >= startDay) || (month === endMonth && day <= endDay)) {
-                return true;
+        for (const sign of zodiacSigns) {
+            if ((month === sign.startMonth && day >= sign.startDay) || (month === sign.endMonth && day <= sign.endDay)) {
+                return changeFormData('horoscope', sign.sign);
             }
-
-            if ((month === 12 && day >= startDay) || (month === 1 && day <= endDay)) {
-                return true;
-            }
-
-            return false;
-        });
-
-        return matchingHoroscope ? matchingHoroscope.sign : 'Неизвестно';
+        }
+        return changeFormData('horoscope', 'Неизвестно'); // Если не найден ни один знак зодиака, по умолчанию возвращаем Козерог
     }
 
     return (

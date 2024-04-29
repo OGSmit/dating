@@ -29,84 +29,97 @@ const RegisterForm = () => {
 
 
   const changeFormData = (key, value) => {
-    setFormData({ ...formData, [key]: value });
-  }
+    setFormData((prevState) => ({
+      ...prevState,
+      [key]: value
+    }))};
 
-  // useEffect(() => {
-  //   console.log(formData)
-  //   changeKey('gender', 'male')
+    // useEffect(() => {
+    //   console.log(formData)
+    //   changeKey('gender', 'male')
 
-  //   console.log(formData)
-  // }, [])
+    //   console.log(formData)
+    // }, [])
 
-  function changeStep(count) {
-    console.log('tyt')
+    function changeStep(count) {
+      console.log('tyt')
       setActiveStep(count)
-  }
-
-  async function handleJWTCheck() {
-    await fetch('http://localhost:3000/api/login', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(res => console.log(res))
-  }
-
-  /*useEffect(() => {
-    handleJWTCheck()
-  }, []);*/
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const login = async () => {
-    const res = await fetch('api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Здесь можно добавить логику для отправки данных на сервер
-    appendUser(formData)
-    // После отправки формы, можно очистить поля
-    setFormData({ name: '', email: '', password: '' });
-  };
-
-  // const step = {
-  //   1: <StepOne changeStep={changeStep} changeFormData={changeFormData} />,
-  //   2: <StepSecond />,
-  //   3: <StepThree />,
-  //   4: <StepFour />,
-  // }
-
-  function step(count) {
-    switch (count) {
-      case 1:
-        return <StepOne changeStep={changeStep} changeFormData={changeFormData} />;
-      case 2:
-        return <StepSecond changeStep={changeStep} changeFormData={changeFormData} />;
-      case 3:
-        return <StepThree  changeStep={changeStep} changeFormData={changeFormData} formData={formData} />;
-      case 4:
-        return <StepFour />;
-      default: 
-        return null;
     }
-  }
-  
 
-  return (
-    <section className='registration'>
-      {/* <form onSubmit={handleSubmit} className='registration__form'>
+    async function handleJWTCheck() {
+      await fetch('http://localhost:3000/api/login', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+        .then(res => console.log(res))
+    }
+
+    /*useEffect(() => {
+      handleJWTCheck()
+    }, []);*/
+
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
+
+    const login = async () => {
+      const res = await fetch('api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+    }
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // Здесь можно добавить логику для отправки данных на сервер
+      appendUser(formData)
+      // После отправки формы, можно очистить поля
+      setFormData({ name: '', email: '', password: '' });
+    };
+
+    // const step = {
+    //   1: <StepOne changeStep={changeStep} changeFormData={changeFormData} />,
+    //   2: <StepSecond />,
+    //   3: <StepThree />,
+    //   4: <StepFour />,
+    // }
+
+    function step(count) {
+      switch (count) {
+        case 1:
+          return <StepOne changeStep={changeStep} changeFormData={changeFormData} />;
+        case 2:
+          return <StepSecond changeStep={changeStep} changeFormData={changeFormData} />;
+        case 3:
+          return <StepThree changeStep={changeStep} changeFormData={changeFormData} formData={formData} />;
+        case 4:
+          return <StepFour />;
+          // шаг 5 : цель знакомств 
+          // семейное положение
+
+          // образование
+
+          // Иконки : алкоголь, сигареты, животные, дети, машина,
+
+
+          // увлечение
+
+          // последний шаг email password
+        default:
+          return null;
+      }
+    }
+
+
+    return (
+      <section className='registration'>
+        {/* <form onSubmit={handleSubmit} className='registration__form'>
         <div>
           <label htmlFor="name">Имя:</label>
           <input
@@ -143,9 +156,9 @@ const RegisterForm = () => {
         <button type="submit">Зарегистрироваться</button>
         <button type='button' onClick={() => console.log(formData)}>Войти</button>
       </form> */}
-      {step(activeStep)}
-    </section>
-  );
-};
+        {step(activeStep)}
+      </section>
+    );
+  };
 
-export default RegisterForm;
+  export default RegisterForm;

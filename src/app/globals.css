@@ -70,6 +70,7 @@
     --callout-border-rgb: 108, 108, 108;
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
+
   }
 }
 
@@ -87,6 +88,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
+  /* color: rgba(230, 10, 10, 0.677); */
   background: linear-gradient(
       to bottom,
       transparent,

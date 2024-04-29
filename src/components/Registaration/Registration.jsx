@@ -1,31 +1,25 @@
 // стр Регистрации в несколько шагов +/- 5 (линки на MainPage, Login)
 'use client'
-import { useEffect, useState } from 'react';
-
-
+import StepFour from '@/components/RegStepFour/StepFour';
+import StepOne from '@/components/RegStepOne/StepOne';
+import StepSecond from '@/components/RegStepSecond/StepSecond';
+import StepThree from '@/components/RegStepThree/StepThree';
+import { useState } from 'react';
+import './Registration.css';
 async function appendUser(data) {
   const res = await fetch('api/registration', {
     method: 'POST',
-		headers: {
+    headers: {
       'Content-Type': 'application/json',
-		},
+    },
     body: JSON.stringify(data)
-	})
+  })
 }
 
-const step = {
-  1: '',
-  2: '',
-  3: '',
-  4: '',
-  5: '',
-  6: '',
-  7: '',
-  8: '',
-}
+
 
 const RegisterForm = () => {
-  const [activeStep, setActiveStep] = useState(0)
+  const [activeStep, setActiveStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,39 +27,33 @@ const RegisterForm = () => {
     gender: ''
   });
 
-  const changeStep = (direction) => {
-    if(direction === 'forward') {
-      setActiveStep((prevState) => {
-        prevState + 1
-      })
-    } else {
-      setActiveStep((prevState) => {
-        prevState - 1
-      })
-    }
-  }
 
-  const changeKey = (key, value) => {
+  const changeFormData = (key, value) => {
     setFormData({ ...formData, [key]: value });
   }
 
-  useEffect(() => {
-    console.log(formData)
-    changeKey('gender', 'male')
+  // useEffect(() => {
+  //   console.log(formData)
+  //   changeKey('gender', 'male')
 
-    console.log(formData)
-  }, [])
-  
-  async function handleJWTCheck () {
+  //   console.log(formData)
+  // }, [])
+
+  function changeStep(count) {
+    console.log('tyt')
+      setActiveStep(count)
+  }
+
+  async function handleJWTCheck() {
     await fetch('http://localhost:3000/api/login', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
     })
-    .then(res => console.log(res))
+      .then(res => console.log(res))
   }
-  
+
   /*useEffect(() => {
     handleJWTCheck()
   }, []);*/
@@ -93,44 +81,70 @@ const RegisterForm = () => {
     setFormData({ name: '', email: '', password: '' });
   };
 
+  // const step = {
+  //   1: <StepOne changeStep={changeStep} changeFormData={changeFormData} />,
+  //   2: <StepSecond />,
+  //   3: <StepThree />,
+  //   4: <StepFour />,
+  // }
+
+  function step(count) {
+    switch (count) {
+      case 1:
+        return <StepOne changeStep={changeStep} changeFormData={changeFormData} />;
+      case 2:
+        return <StepSecond changeStep={changeStep} changeFormData={changeFormData} />;
+      case 3:
+        return <StepThree  changeStep={changeStep} changeFormData={changeFormData} formData={formData} />;
+      case 4:
+        return <StepFour />;
+      default: 
+        return null;
+    }
+  }
+  
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="name">Имя:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Пароль:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button type="submit">Зарегистрироваться</button>
-      <button type='button' onClick={() => console.log(formData)}>Войти</button>
-    </form>
+    <section className='registration'>
+      {/* <form onSubmit={handleSubmit} className='registration__form'>
+        <div>
+          <label htmlFor="name">Имя:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Пароль:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Зарегистрироваться</button>
+        <button type='button' onClick={() => console.log(formData)}>Войти</button>
+      </form> */}
+      {step(activeStep)}
+    </section>
   );
 };
 

@@ -1,10 +1,12 @@
-import { dbConnect, disconnect } from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";
+import User from '@/models/user';
 import { NextResponse } from "next/server";
-import User from '@/models/user'
 
 // Ручка делает запрос и возвращает список всех объектов в DB, для просмотра - URL:'.../api/checkDB'
 export async function GET() {
-  await dbConnect();
+  const conString = 'mongodb+srv://jackkerouac1613:R8QL3SXaGJpmBO9y@tinder.smyb7tb.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Tinder';
+  const anotherStr = 'mongodb+srv://og88:G55UyVHSuqi9OXqj@clusterog.lvybamu.mongodb.net/?retryWrites=true&w=majority&appName=ClusterOG'
+  await dbConnect(conString);
   
   const users = await User.find() 
   

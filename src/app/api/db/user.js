@@ -3,7 +3,8 @@ import User from '@/utils/db/schema/user.js';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-  await connect();
+  const conString = 'mongodb+srv://jackkerouac1613:R8QL3SXaGJpmBO9y@tinder.smyb7tb.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Tinder';
+  await connect(conString);
   console.log('connect ok')
   const { username, email, password } = req.json();
 

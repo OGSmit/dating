@@ -5,15 +5,16 @@ import mongoose from "mongoose";
   promise: null,
 };*/
 
-export async function dbConnect() {
+
+export async function dbConnect(str) {
   try {
     if (global.mongoose && global.mongoose.conn) {
       console.log("Connected from previous");
       return global.mongoose.conn;
     } else {
-      const conString = 'mongodb+srv://jackkerouac1613:R8QL3SXaGJpmBO9y@tinder.smyb7tb.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Tinder';
+      
 
-      const promise = mongoose.connect(conString, {
+      const promise = mongoose.connect(str, {
         autoIndex: true,
       });
 

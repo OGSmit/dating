@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './StepSix.css';
 
-const StepSix = ({ changeStep, changeFormData, formData, onStepBack }) => {
+const StepSix = ({ changeStep, changeFormData, formData, onStepBack, onSubmit }) => {
     const [maritalStatus, setMaritalStatus] = useState('');
     const [alcohol, setAlcohol] = useState(false);
     const [smoking, setSmoking] = useState(false);
@@ -33,7 +33,7 @@ const StepSix = ({ changeStep, changeFormData, formData, onStepBack }) => {
         setCar(!car);
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         const aboutMe = {
             maritalStatus,
             alcohol,
@@ -43,6 +43,7 @@ const StepSix = ({ changeStep, changeFormData, formData, onStepBack }) => {
             car
         };
         changeFormData('aboutMe', aboutMe);
+        onSubmit(aboutMe)
     };
 
     const handleStepBack = () => {

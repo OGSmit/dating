@@ -9,15 +9,6 @@ import StepThree from '@/components/Registaration/RegStepThree/StepThree';
 import { useState } from 'react';
 import './Registration.css';
 
-// async function appendUser(data) {
-//   const res = await fetch('api/registration', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(data)
-//   })
-// }
 
 const RegisterForm = () => {
   const [activeStep, setActiveStep] = useState(1)
@@ -34,6 +25,20 @@ const RegisterForm = () => {
       [key]: value
     }))
   };
+
+  async function appendUser(aboutMe) {
+    const newFormData = { ...formData, aboutMe }
+
+    console.log(newFormData)
+
+    await fetch('api/registration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newFormData)
+    })
+  }
 
   function changeStep(count) {
     setActiveStep(count)
@@ -97,8 +102,8 @@ const RegisterForm = () => {
         return <StepFour changeStep={changeStep} changeFormData={changeFormData} formData={formData} onStepBack={handleStepBack} />;
       case 5:
         return <StepFive changeStep={changeStep} changeFormData={changeFormData} formData={formData} onStepBack={handleStepBack} />;
-        case 6:
-        return <StepSix changeStep={changeStep} changeFormData={changeFormData} formData={formData} onStepBack={handleStepBack} />;
+      case 6:
+        return <StepSix changeStep={changeStep} changeFormData={changeFormData} formData={formData} onStepBack={handleStepBack} onSubmit={appendUser} />;
 
       default:
         return null;

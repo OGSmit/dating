@@ -1,5 +1,4 @@
-import RegisteForm from '@/components/Registaration/Registration';
-
+import MainPage from '@/components/MainPage/MainPage';
 async function getData () {
 	const res = await fetch('http://localhost:3000/api/checkdb', {
 		method: 'GET',
@@ -15,7 +14,7 @@ async function getData () {
 export default function Home() {
 	return (
 	<main >
-		<RegisteForm />
+		<MainPage />
 	</main>
 	);
 }

@@ -1,20 +1,37 @@
-import { dbConnect, disconnect } from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";
+import User from '@/models/user';
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
 import { NextResponse } from "next/server";
-import User from '@/models/user'
 
 export async function POST(req) {
-    const {name, email, password} = await req.json();
+    // Извлекаем данные из запроса
+    const conString = 'mongodb+srv://jackkerouac1613:R8QL3SXaGJpmBO9y@tinder.smyb7tb.mongodb.net/UsersDB?retryWrites=true&w=majority&appName=Tinder';
+    const data = await req.json();
+    const { name, email, password, aboutMe, birthday, gender, horoscope, purposeOfDating } = data
+    try {
+        // Устанавливаем соединение с базой данных
+        await dbConnect(conString);
 
-    await dbConnect();
+        // Хешируем пароль
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    return bcrypt.hash(password, 10)
-        .then((hash) => User.create({
-            name, 
-            email, 
-            password: hash
-        }))
-        .then(res => new NextResponse(JSON.stringify(res), {status: 200}))
-        .catch(error => new NextResponse(JSON.stringify(error), {status: 422}))
+        // Создаем нового пользователя в базе данных
+        const newUser = await User.create({
+            aboutMe,
+            birthday,
+            email,
+            gender,
+            horoscope,
+            name,
+            password: hashedPassword,
+            purposeOfDating
+        });
+
+        // Возвращаем успешный ответ с данными нового пользователя
+        return new NextResponse(JSON.stringify(newUser), { status: 200 });
+    } catch (error) {
+        console.log(error)
+        // Возвращаем ответ с ошибкой при возникновении исключения
+        return new NextResponse(JSON.stringify(error), { status: 422 });
+    }
 }

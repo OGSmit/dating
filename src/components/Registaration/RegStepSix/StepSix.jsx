@@ -1,6 +1,6 @@
+import rega from '@/actions/registration';
 import { useState } from 'react';
 import './StepSix.css';
-
 const StepSix = ({ changeStep, changeFormData, formData, onStepBack, onSubmit }) => {
     const [maritalStatus, setMaritalStatus] = useState('');
     const [alcohol, setAlcohol] = useState(false);
@@ -43,7 +43,7 @@ const StepSix = ({ changeStep, changeFormData, formData, onStepBack, onSubmit })
             car
         };
         changeFormData('aboutMe', aboutMe);
-        onSubmit(aboutMe)
+        // onSubmit(aboutMe)
     };
 
     const handleStepBack = () => {
@@ -65,7 +65,11 @@ const StepSix = ({ changeStep, changeFormData, formData, onStepBack, onSubmit })
                 </div>
             </div>
             <h3>Ваши привычки:</h3>
-            <div className="habit-options">
+            <form className="habit-options" action={async () => {
+               
+               const data = await rega(formData)
+               console.log(data)
+            }}>
                 <div className={`option ${alcohol ? 'selected' : ''}`} onClick={handleAlcoholChange}>
                     <span>Алкоголь</span>
                 </div>
@@ -81,8 +85,8 @@ const StepSix = ({ changeStep, changeFormData, formData, onStepBack, onSubmit })
                 <div className={`option ${car ? 'selected' : ''}`} onClick={handleCarChange}>
                     <span>Машина</span>
                 </div>
-            </div>
             <button onClick={handleNext}>Далее</button>
+            </form>
             <button type='button' onClick={handleStepBack}>Назад</button>
         </div>
     );
